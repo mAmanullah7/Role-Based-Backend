@@ -71,7 +71,7 @@ role-based-backend
 
 4. Create a `.env` file in the root directory and add your MongoDB URI, JWT secret, and port:
    ```
-   MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/<dbname>?retryWrites=true&w=majority
+   MONGODB_URI=
    JWT_SECRET=your_jwt_secret
    PORT=3000
    ```
