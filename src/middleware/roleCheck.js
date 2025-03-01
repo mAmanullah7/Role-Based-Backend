@@ -1,14 +1,16 @@
-const Role = require('../models/Role');
-
-const roleCheck = (roles) => {
+const roleCheck = (allowedRoles) => {
     return (req, res, next) => {
-        const userRole = req.user.role; // Assuming user role is attached to req.user by auth middleware
-
-        if (!roles.includes(userRole)) {
-            return res.status(403).json({ message: 'Access denied. Insufficient permissions.' });
+        if (!req.user) {
+            return res.status(401).json({ message: 'Authentication required' });
         }
 
-        next();
+        const userRole = req.user.role.name;
+        
+        if (allowedRoles.includes(userRole)) {
+            next();
+        } else {
+            res.status(403).json({ message: 'Access denied: Insufficient permissions' });
+        }
     };
 };
 
