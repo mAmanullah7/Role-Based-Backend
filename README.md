@@ -81,23 +81,50 @@ role-based-backend
    npm start
    ```
 
+## Deployment
+
+The API is deployed on Vercel and can be accessed at:
+- Base URL: https://role-based-backend-gamma.vercel.app
+
 ## API Endpoints
 
 ### Authentication
 
-- **POST /api/auth/signup**: Register a new user.
-- **POST /api/auth/login**: Login an existing user.
+- **POST https://role-based-backend-gamma.vercel.app/api/auth/signup**: Register a new user.
+- **POST https://role-based-backend-gamma.vercel.app/api/auth/login**: Login an existing user.
 
 ### User Management
 
-- **GET /api/users**: Retrieve user information.
-- **PUT /api/users**: Update user profile.
+- **GET https://role-based-backend-gamma.vercel.app/api/users/profile**: Retrieve user profile (requires authentication).
+- **PUT https://role-based-backend-gamma.vercel.app/api/users/profile**: Update user profile (requires authentication).
 
 ### Role Management
 
-- **POST /api/roles**: Add a new role.
-- **PUT /api/roles/:id**: Edit an existing role.
-- **DELETE /api/roles/:id**: Delete a role.
+- **POST https://role-based-backend-gamma.vercel.app/api/roles**: Add a new role (requires admin role).
+- **GET https://role-based-backend-gamma.vercel.app/api/roles**: Get all roles (requires authentication).
+- **PUT https://role-based-backend-gamma.vercel.app/api/roles/:id**: Edit an existing role (requires admin role).
+- **DELETE https://role-based-backend-gamma.vercel.app/api/roles/:id**: Delete a role (requires admin role).
+
+## Authentication
+
+All protected endpoints require a Bearer token in the Authorization header:
+
+```
+Authorization: Bearer <your_jwt_token>
+```
+
+You can obtain a JWT token by logging in through the `/api/auth/login` endpoint.
+
+## Testing the API
+
+You can use tools like Postman or curl to test the API endpoints. For example:
+
+```bash
+# Login example
+curl -X POST https://role-based-backend-gamma.vercel.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"your-email@example.com","password":"your-password"}'
+```
 
 ## License
 
