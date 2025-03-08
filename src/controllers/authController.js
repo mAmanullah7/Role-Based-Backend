@@ -66,7 +66,7 @@ exports.login = async (req, res) => {
         // Check password
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(400).json({ message: 'Invalid Email or Password' });
         }
 
         // Generate JWT token
