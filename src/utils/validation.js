@@ -12,6 +12,16 @@ const validateLogin = [
     body('password').notEmpty().withMessage('Password is required'),
 ];
 
+const validateRole = [
+    body('name').notEmpty().withMessage('Role name is required'),
+    body('permissions').isArray().withMessage('Permissions must be an array'),
+];
+
+const validateRoleAssignment = [
+    body('userId').notEmpty().withMessage('User ID is required'),
+    body('roleId').notEmpty().withMessage('Role ID is required'),
+];
+
 const validate = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -23,5 +33,7 @@ const validate = (req, res, next) => {
 module.exports = {
     validateSignup,
     validateLogin,
+    validateRole,
+    validateRoleAssignment,
     validate,
 };
