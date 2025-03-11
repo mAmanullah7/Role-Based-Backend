@@ -8,9 +8,21 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
+// CORS configuration
+const corsOptions = {
+  origin: '*', // Allow requests from any origin
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+
+// Handle OPTIONS preflight requests
+app.options('*', cors(corsOptions));
 
 // Routes
 app.use('/api/auth', authRoutes);

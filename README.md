@@ -619,4 +619,15 @@ Example error response:
 - JWT tokens are used for authentication
 - Role-based access control is implemented for authorization
 - Input validation is performed using express-validator
-- CORS is enabled to control which domains can access the API
+- CORS is enabled to allow requests from any origin, making the API accessible from any client
+
+## Cross-Origin Resource Sharing (CORS)
+
+This API has CORS enabled with the following configuration:
+
+- **Origin**: Allows requests from any origin (`*`)
+- **Methods**: Supports all HTTP methods (GET, POST, PUT, DELETE, etc.)
+- **Headers**: Accepts Content-Type and Authorization headers
+- **Preflight**: Properly handles OPTIONS preflight requests
+
+This configuration ensures that the API can be accessed from any client, including web browsers, mobile apps, and other servers, regardless of their origin.
