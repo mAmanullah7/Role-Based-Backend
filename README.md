@@ -2,17 +2,24 @@
 
 A RESTful API for role-based access control (RBAC) that allows administrators to create roles, assign roles to users, and manage permissions.
 
+## Deployed API
+
+The API is deployed and accessible at:
+**Base URL**: [https://role-based-backend-gamma.vercel.app](https://role-based-backend-gamma.vercel.app)
+
 ## Table of Contents
 
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Database Setup](#database-setup)
-- [API Endpoints](#api-endpoints)
+- [API Documentation](#api-documentation)
   - [Authentication](#authentication)
   - [User Management](#user-management)
   - [Role Management](#role-management)
 - [Testing with Postman](#testing-with-postman)
+- [Error Handling](#error-handling)
+- [Security Considerations](#security-considerations)
 
 ## Features
 
@@ -91,12 +98,14 @@ It also creates a default admin user:
 - Email: `admin@example.com`
 - Password: `Admin@123`
 
-## API Endpoints
+## API Documentation
+
+All API endpoints are available at the base URL: `https://role-based-backend-gamma.vercel.app`
 
 ### Authentication
 
 #### Register a new user
-- **URL**: `/api/auth/signup`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/auth/signup`
 - **Method**: `POST`
 - **Auth required**: No
 - **Body**:
@@ -124,9 +133,21 @@ It also creates a default admin user:
   }
 }
 ```
+- **Error Response**: `400 Bad Request`
+```json
+{
+  "errors": [
+    {
+      "msg": "Email is not valid",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
 
 #### Login
-- **URL**: `/api/auth/login`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/auth/login`
 - **Method**: `POST`
 - **Auth required**: No
 - **Body**:
@@ -151,11 +172,21 @@ It also creates a default admin user:
   }
 }
 ```
+- **Error Response**: `400 Bad Request`
+```json
+{
+  "message": "Invalid credentials"
+}
+```
 
 #### Get User Profile
-- **URL**: `/api/auth/profile`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/auth/profile`
 - **Method**: `GET`
 - **Auth required**: Yes (JWT token in Authorization header)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Success Response**: `200 OK`
 ```json
 {
@@ -169,13 +200,23 @@ It also creates a default admin user:
   }
 }
 ```
+- **Error Response**: `401 Unauthorized`
+```json
+{
+  "message": "Authentication required"
+}
+```
 
 ### User Management
 
 #### Get User Profile
-- **URL**: `/api/users/profile`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/users/profile`
 - **Method**: `GET`
 - **Auth required**: Yes (JWT token in Authorization header)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Success Response**: `200 OK`
 ```json
 {
@@ -187,11 +228,21 @@ It also creates a default admin user:
   "role": "user"
 }
 ```
+- **Error Response**: `401 Unauthorized`
+```json
+{
+  "message": "Authentication required"
+}
+```
 
 #### Update User Profile
-- **URL**: `/api/users/profile`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/users/profile`
 - **Method**: `PUT`
 - **Auth required**: Yes (JWT token in Authorization header)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Body**:
 ```json
 {
@@ -212,11 +263,21 @@ It also creates a default admin user:
   "role": "user"
 }
 ```
+- **Error Response**: `400 Bad Request`
+```json
+{
+  "message": "Server error"
+}
+```
 
 #### Get All Users (Admin Only)
-- **URL**: `/api/users`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/users`
 - **Method**: `GET`
 - **Auth required**: Yes (JWT token in Authorization header with admin role)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Success Response**: `200 OK`
 ```json
 [
@@ -246,11 +307,21 @@ It also creates a default admin user:
   }
 ]
 ```
+- **Error Response**: `403 Forbidden`
+```json
+{
+  "message": "Access denied: Insufficient permissions"
+}
+```
 
 #### Assign Role to User (Admin Only)
-- **URL**: `/api/users/assign-role`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/users/assign-role`
 - **Method**: `POST`
 - **Auth required**: Yes (JWT token in Authorization header with admin role)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Body**:
 ```json
 {
@@ -270,13 +341,23 @@ It also creates a default admin user:
   }
 }
 ```
+- **Error Response**: `404 Not Found`
+```json
+{
+  "message": "User not found"
+}
+```
 
 ### Role Management
 
 #### Create a New Role (Admin Only)
-- **URL**: `/api/roles`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/roles`
 - **Method**: `POST`
 - **Auth required**: Yes (JWT token in Authorization header with admin role)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Body**:
 ```json
 {
@@ -295,11 +376,21 @@ It also creates a default admin user:
   }
 }
 ```
+- **Error Response**: `403 Forbidden`
+```json
+{
+  "message": "Access denied: Insufficient permissions"
+}
+```
 
 #### Get All Roles
-- **URL**: `/api/roles`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/roles`
 - **Method**: `GET`
 - **Auth required**: Yes (JWT token in Authorization header)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Success Response**: `200 OK`
 ```json
 [
@@ -325,11 +416,21 @@ It also creates a default admin user:
   }
 ]
 ```
+- **Error Response**: `401 Unauthorized`
+```json
+{
+  "message": "Authentication required"
+}
+```
 
 #### Get a Role by ID
-- **URL**: `/api/roles/:id`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/roles/:id`
 - **Method**: `GET`
 - **Auth required**: Yes (JWT token in Authorization header)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Success Response**: `200 OK`
 ```json
 {
@@ -338,11 +439,21 @@ It also creates a default admin user:
   "permissions": ["edit_content", "view_dashboard"]
 }
 ```
+- **Error Response**: `404 Not Found`
+```json
+{
+  "message": "Role not found"
+}
+```
 
 #### Update a Role (Admin Only)
-- **URL**: `/api/roles/:id`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/roles/:id`
 - **Method**: `PUT`
 - **Auth required**: Yes (JWT token in Authorization header with admin role)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Body**:
 ```json
 {
@@ -361,26 +472,42 @@ It also creates a default admin user:
   }
 }
 ```
+- **Error Response**: `404 Not Found`
+```json
+{
+  "message": "Role not found"
+}
+```
 
 #### Delete a Role (Admin Only)
-- **URL**: `/api/roles/:id`
+- **URL**: `https://role-based-backend-gamma.vercel.app/api/roles/:id`
 - **Method**: `DELETE`
 - **Auth required**: Yes (JWT token in Authorization header with admin role)
+- **Headers**:
+```
+Authorization: Bearer <your_jwt_token>
+```
 - **Success Response**: `200 OK`
 ```json
 {
   "message": "Role deleted successfully"
 }
 ```
+- **Error Response**: `404 Not Found`
+```json
+{
+  "message": "Role not found"
+}
+```
 
 ## Testing with Postman
 
-Here are some example Postman requests to test the API:
+Here are some example Postman requests to test the deployed API:
 
 ### 1. Register a new user
 
 ```
-POST http://localhost:3000/api/auth/signup
+POST https://role-based-backend-gamma.vercel.app/api/auth/signup
 Content-Type: application/json
 
 {
@@ -395,7 +522,7 @@ Content-Type: application/json
 ### 2. Login
 
 ```
-POST http://localhost:3000/api/auth/login
+POST https://role-based-backend-gamma.vercel.app/api/auth/login
 Content-Type: application/json
 
 {
@@ -409,7 +536,7 @@ Save the token from the response for subsequent requests.
 ### 3. Create a new role (as admin)
 
 ```
-POST http://localhost:3000/api/roles
+POST https://role-based-backend-gamma.vercel.app/api/roles
 Content-Type: application/json
 Authorization: Bearer <your_token>
 
@@ -422,7 +549,7 @@ Authorization: Bearer <your_token>
 ### 4. Get all roles
 
 ```
-GET http://localhost:3000/api/roles
+GET https://role-based-backend-gamma.vercel.app/api/roles
 Authorization: Bearer <your_token>
 ```
 
@@ -431,14 +558,14 @@ Authorization: Bearer <your_token>
 First, get all users to find the user ID:
 
 ```
-GET http://localhost:3000/api/users
+GET https://role-based-backend-gamma.vercel.app/api/users
 Authorization: Bearer <your_token>
 ```
 
 Then, assign a role to a user:
 
 ```
-POST http://localhost:3000/api/users/assign-role
+POST https://role-based-backend-gamma.vercel.app/api/users/assign-role
 Content-Type: application/json
 Authorization: Bearer <your_token>
 
@@ -451,7 +578,7 @@ Authorization: Bearer <your_token>
 ### 6. Update a role (as admin)
 
 ```
-PUT http://localhost:3000/api/roles/<role_id>
+PUT https://role-based-backend-gamma.vercel.app/api/roles/<role_id>
 Content-Type: application/json
 Authorization: Bearer <your_token>
 
@@ -464,7 +591,7 @@ Authorization: Bearer <your_token>
 ### 7. Delete a role (as admin)
 
 ```
-DELETE http://localhost:3000/api/roles/<role_id>
+DELETE https://role-based-backend-gamma.vercel.app/api/roles/<role_id>
 Authorization: Bearer <your_token>
 ```
 
@@ -492,3 +619,4 @@ Example error response:
 - JWT tokens are used for authentication
 - Role-based access control is implemented for authorization
 - Input validation is performed using express-validator
+- CORS is enabled to control which domains can access the API
